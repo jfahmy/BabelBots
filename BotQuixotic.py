@@ -25,11 +25,21 @@ def run():
  stub = ProseAndBabel_pb2_grpc.ProseAndBabelStub(channel)
 
  while True:
-     users = twitterapi.new_mentions()
-     for user in users:
-         full_text = twitterapi.get_timeline(user[0])
-         response = stub.UserMarkov(ProseAndBabel_pb2.UserTweets(tweets=full_text))
-         twitterapi.post_mention(user[0], response.prose, user[1])
+     # users = twitterapi.new_mentions()
+     # for user in users:
+     #     full_text = twitterapi.get_timeline(user[0])
+     #     response = stub.UserMarkov(ProseAndBabel_pb2.UserTweets(tweets=full_text))
+     #     twitterapi.post_mention(user[0], response.prose, user[1])
+
+
+     screen_name = 'realDonaldTrump'
+     full_text = twitterapi.get_timeline(screen_name)
+     response = stub.UserMarkov(ProseAndBabel_pb2.UserTweets(tweets=full_text))
+     prose = "@" + screen_name + " " + response.prose + screen_name
+     print(prose)
+     print("____________")
+     # twitterapi.api.PostUpdate(prose)
+
      # friends = twitterapi.new_friends
      # print(friends)
      # response = stub.UserMarkov(ProseAndBabel_pb2.UserTweets(tweets=twitterquery.usertweets(user)))
@@ -47,7 +57,7 @@ def run():
      # print("Markovian Babel:")
      # print(response.prose)
      # print("\n")
-     sleep(20)
+     sleep(2)
 
  # response = stub.GetHaiku(ProseAndBabel_pb2.BabelRequest(ask=file_location))
  # print("A Haiku 4 U:")

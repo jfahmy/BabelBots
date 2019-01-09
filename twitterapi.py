@@ -1,9 +1,10 @@
-import tweepy
 import requests
 from credentials import *
 import twitter
 import pytz
 from datetime import datetime
+import re
+import random
 
 #
 # auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -13,7 +14,8 @@ from datetime import datetime
 api = twitter.Api(consumer_key=consumer_key,
                   consumer_secret=consumer_secret,
                   access_token_key=access_token,
-                  access_token_secret=access_token_secret)
+                  access_token_secret=access_token_secret,
+                  tweet_mode='extended')
 
 # Need to change me to current time zone before release to production!!!!!!!!!!!!!!!!!!
 last_run = datetime.strptime("Tue Jan 07 21:38:51 +0000 2019", "%a %b %d %H:%M:%S %z %Y")
@@ -39,13 +41,28 @@ def new_mentions():
     last_run = datetime.utcnow().replace(tzinfo=pytz.utc)
     return mentions_list
 
+def check_punctuation(tweet):
+    punctuation = [".","!","?"]
+    if tweet[-1] in punctuation:
+        return tweet
+    else:
+        return tweet + random.choice(punctuation)
+
+
 def get_timeline(screen_name):
-    all_updates = api.GetUserTimeline(screen_name=screen_name, count=200)
+    all_updates = api.GetUserTimeline(screen_name=screen_name, count=5, exclude_replies=True)
+
     text = []
     for status in all_updates:
-        text.append(status.text)
+        tweet = re.sub(r'^https?:\/\/.*[\r\n]*', '', status.full_text)
+        if tweet == "":
+            pass
+        else:
+            tweet = re.sub(r'&amp;','&', tweet)
+            tweet = check_punctuation(tweet)
+            text.append(tweet)
 
-    text = "".join(text)
+    text = " ".join(text)
     return text
 
 
@@ -56,3 +73,9 @@ def new_friends():
 def post_mention(screen_name, prose, id):
     prose = "@" + screen_name + " " + prose + screen_name
     api.PostUpdate(prose, in_reply_to_status_id=id)
+
+
+
+# screen_name = 'realDonaldTrump'
+# full_text = get_timeline(screen_name)
+# print(full_text)
