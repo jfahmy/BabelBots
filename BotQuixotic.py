@@ -25,15 +25,16 @@ def run():
  stub = ProseAndBabel_pb2_grpc.ProseAndBabelStub(channel)
 
  while True:
-     # users = twitterapi.new_mentions()
-     # for user in users:
-     #     full_text = twitterapi.get_timeline(user[0])
-     #     response = stub.UserMarkov(ProseAndBabel_pb2.UserTweets(tweets=full_text))
-     #     twitterapi.post_mention(user[0], response.prose, user[1])
+     users = twitterapi.new_mentions()
+     for user in users:
+         full_text = twitterapi.get_timeline(user[0])
+         response = stub.UserMarkov(ProseAndBabel_pb2.UserTweets(tweets=full_text))
+         twitterapi.post_mention(user[0], response.prose, user[1])
 
 
-     screen_name = 'realDonaldTrump'
-     full_text = twitterapi.get_timeline(screen_name)
+
+     # screen_name = 'realDonaldTrump'
+     # full_text = twitterapi.get_timeline(screen_name)
      response = stub.UserMarkov(ProseAndBabel_pb2.UserTweets(tweets=full_text))
      prose = "@" + screen_name + " " + response.prose + screen_name
      print(prose)

@@ -6,10 +6,6 @@ from datetime import datetime
 import re
 import random
 
-#
-# auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-# auth.set_access_token(access_token, access_token_secret)
-# api = tweepy.API(auth)
 
 api = twitter.Api(consumer_key=consumer_key,
                   consumer_secret=consumer_secret,
@@ -17,15 +13,28 @@ api = twitter.Api(consumer_key=consumer_key,
                   access_token_secret=access_token_secret,
                   tweet_mode='extended')
 
-# Need to change me to current time zone before release to production!!!!!!!!!!!!!!!!!!
-last_run = datetime.strptime("Tue Jan 07 21:38:51 +0000 2019", "%a %b %d %H:%M:%S %z %Y")
 
+# records current time in timestamp log
+def record_current_time():
+    time_tracker = open('previous_run_time.txt','w')
+    time = datetime.utcnow().replace(tzinfo=pytz.utc)
+    time_string = datetime.strftime(time, "%a %b %d %H:%M:%S %z %Y")
+    time_tracker.write(time_string)
+
+# reads time string from file
+def read_timestamp():
+    time_tracker = open('previous_run_time.txt', 'r')
+    time_string = time_tracker.readline()
+    return parse_time(time_string)
+
+# converse time string to datetime
 def parse_time(time_string):
     time = datetime.strptime(time_string, "%a %b %d %H:%M:%S %z %Y")
     return time
 
-def needs_response(mention):
-    return parse_time(mention) > last_run
+# Returns true/false if the mention has occured since last run time
+def needs_response(time_of_mention):
+    return parse_time(time_of_mention) > read_timestamp()
 
 def new_mentions():
     mentions = api.GetSearch(raw_query="q=%40botquixotic&src=typd")
@@ -38,7 +47,7 @@ def new_mentions():
             user_mention.append(mention.id)
             mentions_list.append(user_mention)
 
-    last_run = datetime.utcnow().replace(tzinfo=pytz.utc)
+    record_current_time()
     return mentions_list
 
 def check_punctuation(tweet):
@@ -73,9 +82,3 @@ def new_friends():
 def post_mention(screen_name, prose, id):
     prose = "@" + screen_name + " " + prose + screen_name
     api.PostUpdate(prose, in_reply_to_status_id=id)
-
-
-
-# screen_name = 'realDonaldTrump'
-# full_text = get_timeline(screen_name)
-# print(full_text)
