@@ -18,7 +18,7 @@ api = twitter.Api(consumer_key=quix_consumer_key,
 def record_current_time():
     time_tracker = open('quixotic_run_time.txt','w')
     time = datetime.utcnow().replace(tzinfo=pytz.utc)
-    time_string = datetime.strftime(time, "%a %b %d %H:%M:%S %z %Y")
+    time_string = datetime.strftime(time, "%a %b %d %H:%M:%S %Y")
     time_tracker.write(time_string)
 
 # reads time string from file
@@ -29,7 +29,7 @@ def read_timestamp():
 
 # converse time string to datetime
 def parse_time(time_string):
-    time = datetime.strptime(time_string.rstrip(), "%a %b %d %H:%M:%S %z %Y")
+    time = datetime.strptime(time_string.rstrip(), "%a %b %d %H:%M:%S %Y")
     return time
 
 # Returns true/false if the mention has occured since last run time
@@ -42,7 +42,8 @@ def new_mentions():
     mentions_list = []
     for mention in mentions:
         user_mention = []
-        if needs_response(mention.created_at):
+        timestamp = re.sub(r'\+0000 ', '', mention.created_at)
+        if needs_response(timestamp):
             user_mention.append(mention.user.screen_name)
             user_mention.append(mention.id)
             mentions_list.append(user_mention)
