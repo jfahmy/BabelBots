@@ -16,14 +16,14 @@ api = twitter.Api(consumer_key=quix_consumer_key,
 
 # records current time in timestamp log
 def record_current_time():
-    time_tracker = open('quixotic_run_time.txt','w')
+    time_tracker = open('BabelBots/Clients/quixotic_run_time.txt','w')
     time = datetime.utcnow().replace(tzinfo=pytz.utc)
     time_string = datetime.strftime(time, "%a %b %d %H:%M:%S %Y")
     time_tracker.write(time_string)
 
 # reads time string from file
 def read_timestamp():
-    time_tracker = open('quixotic_run_time.txt', 'r')
+    time_tracker = open('BabelBots/Clients/quixotic_run_time.txt', 'r')
     time_string = time_tracker.readline()
     return parse_time(time_string)
 
@@ -61,10 +61,10 @@ def check_punctuation(tweet):
 
 
 def get_timeline(screen_name):
-    all_updates = api.GetUserTimeline(screen_name=screen_name, count=200, exclude_replies=True, include_rts=True)
+    all_updates = api.GetUserTimeline(screen_name=screen_name, count=200, exclude_replies=True, include_rts=False)
     text = []
     for status in all_updates:
-        tweet = re.sub(r'^https?:\/\/.*[\r\n]*', '', status.full_text)
+        tweet = re.sub(r'https?:\/\/.*[\r\n]*', '', status.full_text)
         if tweet == "":
             pass
         else:
