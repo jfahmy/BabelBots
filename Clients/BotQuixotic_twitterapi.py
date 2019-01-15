@@ -38,17 +38,21 @@ def needs_response(time_of_mention):
 
 def new_mentions():
     mentions = api.GetSearch(raw_query="q=%40botquixotic&src=typd")
+    print(mentions)
 
     mentions_list = []
     for mention in mentions:
-        user_mention = []
-        timestamp = re.sub(r'\+0000 ', '', mention.created_at)
-        if needs_response(timestamp):
-            user_mention.append(mention.user.screen_name)
-            user_mention.append(mention.id)
-            mentions_list.append(user_mention)
-            print("FOUND RECENT MENTION")
-            print(user_mention)
+        if "RT" in mention.full_text:
+            pass
+        else:
+            user_mention = []
+            timestamp = re.sub(r'\+0000 ', '', mention.created_at)
+            if needs_response(timestamp):
+                user_mention.append(mention.user.screen_name)
+                user_mention.append(mention.id)
+                mentions_list.append(user_mention)
+                print("FOUND RECENT MENTION")
+                print(user_mention)
 
     return mentions_list
 
@@ -98,3 +102,7 @@ def post_mention(screen_name, prose, id):
 
 def post_prose(prose):
     api.PostUpdate(prose)
+
+
+
+new_mentions()
