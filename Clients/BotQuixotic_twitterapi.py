@@ -42,10 +42,10 @@ def new_mentions():
 
     mentions_list = []
     for mention in mentions:
+        user_mention = []
         if "RT" in mention.full_text:
             pass
         else:
-            user_mention = []
             timestamp = re.sub(r'\+0000 ', '', mention.created_at)
             if needs_response(timestamp):
                 user_mention.append(mention.user.screen_name)
