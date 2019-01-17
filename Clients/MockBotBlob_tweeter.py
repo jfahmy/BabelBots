@@ -1,6 +1,6 @@
 from __future__ import print_function
 import grpc
-import twitterapi
+# import BotQuixotic_twitterapi
 import ProseAndBabel_pb2
 import ProseAndBabel_pb2_grpc
 from time import sleep
@@ -11,8 +11,12 @@ def run():
  channel = grpc.insecure_channel('localhost:50050')
  stub = ProseAndBabel_pb2_grpc.ProseAndBabelStub(channel)
 
- # response = stub.GetHaiku(ProseAndBabel_pb2.BabelRequest(ask=file_location))
- # twitterapi.post_prose(response.prose + "#QuixoticHaiku")
+ #tweets a haiku
+ response = stub.GetCelebMarkov(ProseAndBabel_pb2.BabelRequest())
+ print(response)
+ print(response.tweet)
+ print(response.source)
+ # BotQuixotic_twitterapi.post_prose(response.prose + "#QuixoticHaiku")
 
 
 if __name__ == '__main__':
