@@ -1,4 +1,3 @@
-import MockBotBlob_twitterapi
 import random
 import markovchain_pb2
 import re
@@ -17,22 +16,13 @@ def generate_sentence(chain):
 
     sentence = ' '.join(sentence)
     sources = ' '.join(sources)
-    print([sentence, sources])
     return [sentence, sources]
 
 
 def get_markov():
     chain = markovchain_pb2.Chain()
-    f = open("BabelBots/Resources/celeb_chain.txt", "rb")
-    print("!!!!!!!!!!!!READING CELEBRITY MARKOV")
+    f = open("Prose-and-Babel-API/Server/celeb_chain.txt", "rb")
     chain.ParseFromString(f.read())
-    print("Finished reading...")
+    print("!!!!!!!!!!!!READING CELEBRITY MARKOV")
     f.close()
     return chain
-
-
-chain = get_markov()
-print("Generating sentence:")
-tweet = generate_sentence(chain)
-
-MockBotBlob_twitterapi.post_tweet(tweet[0] + "\n" + tweet[1])

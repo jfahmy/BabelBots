@@ -102,7 +102,3 @@ def post_mention(screen_name, prose, id):
 
 def post_prose(prose):
     api.PostUpdate(prose)
-
-
-
-new_mentions()
