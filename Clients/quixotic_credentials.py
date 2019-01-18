@@ -1,4 +1,0 @@
-quix_consumer_key = 'JOBWq7S8paiH3JTXHhpHtee4O'
-quix_consumer_secret = 'nG09080MhXUdaEXC8srUOmNLv4QYa3FDWNR9DF916YHfnSbHqX'
-quix_access_token = '1080550497805717505-x0vE5N9EK1bhZx6Q28SqKX5D0km475'
-quix_access_token_secret = 'UXyiENFrYFWWQCPIeUaxwozvVTkXj1ryqo6YGwaJoh7Go'

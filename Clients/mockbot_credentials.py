@@ -1,4 +1,0 @@
-mockbot_consumer_key = "tjxBVZS2Xu2ay4VKlLqB0bk0n"
-mockbot_consumer_secret = "9flp9kKCWMMp7DbuPGMRbFPlXxZA8f9Vr9t2YtNfWyEi8Yv4Tx"
-mockbot_access_token = "1083132402862481408-33PMPC4kRYiQRUqLDhwTwrqIoQuyEk"
-mockbot_access_token_secret = "k5o1wWn9bswSNIOmB2R5uNWiFzBHEA5ihOeSwOvuy4R0F"
